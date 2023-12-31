@@ -3,6 +3,7 @@ package Task2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 /**
  * Корзина
@@ -88,7 +89,48 @@ public class Cart<T extends Food> {
 
     }*/
 
+    public void cardBalancing() {
+        // Создаем множество, которое хранит типы питательных веществ из наличия в корзине
+        Set<String> nutrients = new HashSet<>();
 
+        // Добавляем в множество типы питательных веществ, которые есть в продуктах из корзины
+        foodstuffs.stream()
+                .filter(food -> food.getProteins() || food.getFats() || food.getCarbohydrates())
+                .forEach(food -> {
+                    if (food.getProteins()) nutrients.add("proteins");
+                    if (food.getFats()) nutrients.add("fats");
+                    if (food.getCarbohydrates()) nutrients.add("carbohydrates");
+                });
+
+        // Проверяем, есть ли в корзине все три типа питательных веществ
+        if (nutrients.size() == 3) {
+            System.out.println("Корзина уже сбалансирована по БЖУ.");
+            return;
+        }
+
+        // Если нет, то ищем в маркете продукты, которые дополнят недостающие типы питательных веществ
+        market.getThings(clazz).stream()
+                .filter(thing -> thing.getProteins() || thing.getFats() || thing.getCarbohydrates())
+                .forEach(thing -> {
+                    if (!nutrients.contains("proteins") && thing.getProteins()) {
+                        nutrients.add("proteins");
+                        foodstuffs.add(thing);
+                    } else if (!nutrients.contains("fats") && thing.getFats()) {
+                        nutrients.add("fats");
+                        foodstuffs.add(thing);
+                    } else if (!nutrients.contains("carbohydrates") && thing.getCarbohydrates()) {
+                        nutrients.add("carbohydrates");
+                        foodstuffs.add(thing);
+                    }
+                });
+
+        // Снова проверяем, есть ли в корзине все три типа питательных веществ
+        if (nutrients.size() == 3) {
+            System.out.println("Корзина сбалансирована по БЖУ.");
+        } else {
+            System.out.println("Невозможно сбалансировать корзину по БЖУ.");
+        }
+    }
 
     //endregion
 
