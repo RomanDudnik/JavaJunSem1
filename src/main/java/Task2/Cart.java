@@ -34,7 +34,7 @@ public class Cart<T extends Food> {
         foodstuffs = new ArrayList<>();
     }
 
-    public void cardBalancing()
+    /*public void cardBalancing()
     {
         boolean proteins = false;
         boolean fats = false;
@@ -86,7 +86,9 @@ public class Cart<T extends Food> {
         else
             System.out.println("Невозможно сбалансировать корзину по БЖУ.");
 
-    }
+    }*/
+
+
 
     //endregion
 
